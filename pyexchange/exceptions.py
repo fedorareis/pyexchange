@@ -11,6 +11,10 @@ class FailedExchangeException(Exception):
     pass
 
 
+class ExchangeSoapFault(FailedExchangeException):
+    """Raised when a SOAP fault is returned."""
+
+
 class ExchangeInvalidIdMalformedException(FailedExchangeException):
     """Raised when we ask for an event key that doesn't exist."""
     pass

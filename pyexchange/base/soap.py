@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 (c) 2013 LinkedIn Corp. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License");?you may not use this file except in compliance with the License. You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
@@ -11,7 +12,7 @@ from lxml.builder import ElementMaker
 from datetime import datetime
 from pytz import utc
 
-from ..exceptions import FailedExchangeException
+from ..exceptions import ExchangeSoapFault, FailedExchangeException
 
 SOAP_NS = u'http://schemas.xmlsoap.org/soap/envelope/'
 
@@ -57,7 +58,13 @@ class ExchangeServiceSOAP(object):
         if fault_nodes:
             fault = fault_nodes[0]
             log.debug(etree.tostring(fault, pretty_print=True))
-            raise FailedExchangeException(u"SOAP Fault from Exchange server", fault.text)
+            # SOAP Fault nodes MUST contain a faultcode and faultstring,
+            # let's report those in the error.
+            msg = u'{} -- {}'.format(
+                fault.xpath(u'faultcode')[0].text,
+                fault.xpath(u'faultstring')[0].text,
+            )
+            raise ExchangeSoapFault(msg)
 
     def _send_soap_request(self, xml, headers=None, retries=2, timeout=30, encoding="utf-8"):
         body = etree.tostring(xml, encoding=encoding)

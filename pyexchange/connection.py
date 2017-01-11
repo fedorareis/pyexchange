@@ -62,7 +62,11 @@ class ExchangeNTLMAuthConnection(ExchangeBaseConnection):
 
         try:
             response = self.session.post(self.url, data=body, headers=headers, verify=self.verify_certificate)
-            response.raise_for_status()
+            if response.status_code != 500:
+                # We need to treat 500s as valid responses, because that's
+                # how SOAP indicates any error condition even when
+                # returning a meaningful response body.
+                response.raise_for_status()
         except requests.exceptions.RequestException as err:
             log.debug(getattr(err.response, 'content', 'No response.'))
             raise FailedExchangeException(u'Unable to connect to Exchange: %s' % err)
