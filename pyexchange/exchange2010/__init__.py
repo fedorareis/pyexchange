@@ -1561,7 +1561,7 @@ class Exchange2010MailItem(BaseExchangeMailItem):
         )
 
     def __repr__(self):
-        return "<Exchange2010MailItem: {}>".format(self.subject.encode('utf-8'))
+        return "<Exchange2010MailItem: {}>".format(self.subject).encode('utf-8')
 
 
 class Exchange2010TaskService(BaseExchangeTaskService):
