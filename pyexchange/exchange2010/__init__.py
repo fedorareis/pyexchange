@@ -1423,28 +1423,6 @@ class Exchange2010MailItem(BaseExchangeMailItem):
 
         return self
 
-    def init_from_aco(self, obj, attachment_url=None):
-        self._id = obj['eid']
-        for meta in obj['detail']['meta']:
-            if meta['label'] == 'Subject':
-                self.subject = meta['value']
-            elif meta['label'] == 'Sent':
-                self.datetime_sent = meta['value']
-            elif meta['label'] == 'Culture':
-                self.culture = meta['value']
-            elif meta['label'] == 'Size':
-                self.size = meta['value']
-            elif meta['label'] == 'Importance':
-                self.importance = meta['value']
-        self.load_extended_properties()
-        if attachment_url is not None:
-            import urllib
-            import base64
-            for att in self.attachments:
-                att['att_url'] = attachment_url + "?" + urllib.urlencode(
-                    (('att_id', base64.b64encode(att['id'])),)
-                )
-
     def load_extended_properties(self):
         body = soap_request.get_mail_items([self])
         xml_result = self.service.send(body)
