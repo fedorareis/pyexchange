@@ -13,7 +13,7 @@ log = logging.getLogger("pyexchange")
 
 
 class NullHandler(logging.Handler):
-  def emit(self, record):
-    pass
+    def emit(self, record):
+        pass
 
 log.addHandler(NullHandler())

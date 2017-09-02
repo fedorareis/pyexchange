@@ -8,10 +8,10 @@ from pytz import utc
 
 
 def convert_datetime_to_utc(datetime_to_convert):
-  if datetime_to_convert is None:
-    return None
+    if datetime_to_convert is None:
+        return None
 
-  if datetime_to_convert.tzinfo:
-    return datetime_to_convert.astimezone(utc)
-  else:
-    return utc.localize(datetime_to_convert)
+    if datetime_to_convert.tzinfo:
+        return datetime_to_convert.astimezone(utc)
+    else:
+        return utc.localize(datetime_to_convert)

@@ -1,35 +1,46 @@
-class BaseExchangeFolderService(object):
-
-    def __init__(self, service):
+class BaseExchangeContactService(object):
+    def __init__(self, service, folder_id):
         self.service = service
+        self.folder_id = folder_id
 
-    def get_folder(self, id, *args, **kwargs):
+    def get_contact(self, id):
+        raise NotImplementedError
+
+    def new_contact(self, **properties):
         raise NotImplementedError
 
 
-class BaseExchangeFolder(object):
-
+class BaseExchangeContactItem(object):
     _id = None
     _change_key = None
-    _parent_id = None
-    _parent_change_key = None
-    _folder_type = u'Folder'
-    folder_class = None
 
     _service = None
-
-    display_name = u''
-    child_folder_count = None
-    total_count = None
-    unread_count = None
+    folder_id = None
 
     _track_dirty_attributes = False
     _dirty_attributes = set()  # any attributes that have changed, and we need to update in Exchange
 
-    FOLDER_TYPES = (u'Folder', u'CalendarFolder', u'ContactsFolder', u'SearchFolder', u'TasksFolder')
+    first_name = None
+    last_name = None
+    full_name = None
+    display_name = None
+    sort_name = None
+    email_address1 = None
+    email_address2 = None
+    email_address3 = None
+    birthday = None
+    job_title = None
+    department = None
+    company_name = None
+    office_location = None
+    primary_phone = None
+    business_phone = None
+    home_phone = None
+    mobile_phone = None
 
-    def __init__(self, service, id=None, xml=None, **kwargs):
+    def __init__(self, service, id=None, xml=None, folder_id=None, **kwargs):
         self.service = service
+        self.folder_id = folder_id
 
         if xml is not None:
             self._init_from_xml(xml)
@@ -60,26 +71,8 @@ class BaseExchangeFolder(object):
 
     @property
     def change_key(self):
-        """ **Read-only.** When you change an folder, Exchange makes you pass a change key to prevent overwriting a previous version. """
+        """ **Read-only.** When you change a contact, Exchange makes you pass a change key to prevent overwriting a previous version. """
         return self._change_key
-
-    @property
-    def parent_id(self):
-        """ **Read-only.** The internal id Exchange uses to refer to the parent folder. """
-        return self._parent_id
-
-    @parent_id.setter
-    def parent_id(self, value):
-        self._parent_id = value
-
-    @property
-    def folder_type(self):
-        return self._folder_type
-
-    @folder_type.setter
-    def folder_type(self, value):
-        if value in self.FOLDER_TYPES:
-            self._folder_type = value
 
     def _update_properties(self, properties):
         self._track_dirty_attributes = False

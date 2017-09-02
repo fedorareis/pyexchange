@@ -7,38 +7,42 @@ Unless required by applicable law or agreed to in writing, software?distributed 
 
 
 class FailedExchangeException(Exception):
-  """Raised when the Microsoft Exchange Server returns an error via SOAP for a request."""
-  pass
+    """Raised when the Microsoft Exchange Server returns an error via SOAP for a request."""
+    pass
+
+
+class ExchangeSoapFault(FailedExchangeException):
+    """Raised when a SOAP fault is returned."""
 
 
 class ExchangeInvalidIdMalformedException(FailedExchangeException):
-  """Raised when we ask for an event key that doesn't exist."""
-  pass
+    """Raised when we ask for an event key that doesn't exist."""
+    pass
 
 
 class ExchangeStaleChangeKeyException(FailedExchangeException):
-  """Raised when a edit event fails due to a stale change key. Exchange requires a change token for all edit events,
-  and they change every time an object is updated"""
-  pass
+    """Raised when a edit event fails due to a stale change key. Exchange requires a change token for all edit events,
+    and they change every time an object is updated"""
+    pass
 
 
 class ExchangeItemNotFoundException(FailedExchangeException):
-  """
-  Raised when an item is not found on the Exchange server
-  """
-  pass
+    """
+    Raised when an item is not found on the Exchange server
+    """
+    pass
 
 
 class ExchangeIrresolvableConflictException(FailedExchangeException):
-  """Raised when attempting to update an item that has changed since the the current change key was obtained."""
-  pass
+    """Raised when attempting to update an item that has changed since the the current change key was obtained."""
+    pass
 
 
 class ExchangeInternalServerTransientErrorException(FailedExchangeException):
-  """Raised when an internal server error occurs in Exchange and the request can actually be retried."""
-  pass
+    """Raised when an internal server error occurs in Exchange and the request can actually be retried."""
+    pass
 
 
 class InvalidEventType(Exception):
-  """Raised when a method for an event gets called on the wrong type of event."""
-  pass
+    """Raised when a method for an event gets called on the wrong type of event."""
+    pass
