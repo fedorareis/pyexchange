@@ -1288,7 +1288,7 @@ class Exchange2010MailList(object):
         Exchange on demand.
         """
         if self._items is not None:
-            for item in self._item:
+            for item in self._items:
                 yield item
             return
 
