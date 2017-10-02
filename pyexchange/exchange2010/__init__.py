@@ -1298,6 +1298,7 @@ class Exchange2010MailList(object):
             return
 
         offset = 0
+        self._items = list()
         while True:
             body = soap_request.find_items(
                 folder_id=self.folder_id, limit=self.service.batch_size,
@@ -1363,7 +1364,7 @@ class Exchange2010MailList(object):
             log.debug(u'No mails returned.')
             return []
 
-        items = []
+        items = list()
         for mail_xml in mails:
             log.debug(u'Adding message to mailbox...')
             mail = Exchange2010MailItem(service=self.service,
