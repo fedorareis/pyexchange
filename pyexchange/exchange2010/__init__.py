@@ -1278,6 +1278,9 @@ class Exchange2010MailList(object):
             self._parse_response_for_all_mails(xml_result)
             self.load_extended_properties(self._items)
             self.count = len(self._items)
+        else:
+            while self.items:
+                pass
 
     @property
     def items(self):
