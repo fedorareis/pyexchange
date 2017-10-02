@@ -1275,8 +1275,7 @@ class Exchange2010MailList(object):
         self.count = None
 
         if xml_result is not None:
-            self._items = list()
-            self._parse_response_for_all_mails(xml_result)
+            self._items = self._parse_response_for_all_mails(xml_result)
             self.load_extended_properties(self._items)
             self.count = len(self._items)
         else:
@@ -1298,7 +1297,6 @@ class Exchange2010MailList(object):
                 yield item
             return
 
-        self._items = list()
         offset = 0
         while True:
             body = soap_request.find_items(
@@ -1323,6 +1321,7 @@ class Exchange2010MailList(object):
             self.load_extended_properties(batch)
 
             for t in batch:
+                self._items.append(t)
                 yield t
 
             if last_batch:
@@ -1364,6 +1363,7 @@ class Exchange2010MailList(object):
             log.debug(u'No mails returned.')
             return []
 
+        items = []
         for mail_xml in mails:
             log.debug(u'Adding message to mailbox...')
             mail = Exchange2010MailItem(service=self.service,
@@ -1371,7 +1371,9 @@ class Exchange2010MailList(object):
                                         xml=mail_xml)
             log.debug(u'Added mail with id %s and subject %s.',
                       mail.id, mail.subject)
-            self._items.append(mail)
+            items.append(mail)
+
+        return items
 
 
 class Exchange2010MailItem(BaseExchangeMailItem):
