@@ -1275,12 +1275,9 @@ class Exchange2010MailList(object):
         self.count = None
 
         if xml_result is not None:
-            self._items = self._parse_response_for_all_mails(xml_result)
+            self._parse_response_for_all_mails(xml_result)
             self.load_extended_properties(self._items)
             self.count = len(self._items)
-        else:
-            for item in self.items:
-                self._items.append(item)
 
     @property
     def items(self):
@@ -1360,7 +1357,6 @@ class Exchange2010MailList(object):
             log.debug(u'No mails returned.')
             return []
 
-        items = []
         for mail_xml in mails:
             log.debug(u'Adding message to mailbox...')
             mail = Exchange2010MailItem(service=self.service,
@@ -1368,9 +1364,7 @@ class Exchange2010MailList(object):
                                         xml=mail_xml)
             log.debug(u'Added mail with id %s and subject %s.',
                       mail.id, mail.subject)
-            items.append(mail)
-
-        return items
+            _items.append(mail)
 
 
 class Exchange2010MailItem(BaseExchangeMailItem):
