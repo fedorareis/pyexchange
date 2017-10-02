@@ -1279,9 +1279,7 @@ class Exchange2010MailList(object):
             self.load_extended_properties(self._items)
             self.count = len(self._items)
         else:
-            print("xml is none")
             for item in self.items:
-                # print(item.subject)
                 pass
 
     @property
