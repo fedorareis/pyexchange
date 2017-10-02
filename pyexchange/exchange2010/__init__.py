@@ -1271,13 +1271,16 @@ class Exchange2010MailList(object):
     def __init__(self, service=None, folder_id=u'inbox', xml_result=None):
         self.service = service
         self.folder_id = folder_id
-        self._items = None
+        self._items = list()
         self.count = None
 
         if xml_result is not None:
             self._items = self._parse_response_for_all_mails(xml_result)
             self.load_extended_properties(self._items)
             self.count = len(self._items)
+        else:
+            for item in self.items:
+                self._items.append(item)
 
     @property
     def items(self):
