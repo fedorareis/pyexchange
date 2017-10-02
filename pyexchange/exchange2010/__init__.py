@@ -1364,7 +1364,7 @@ class Exchange2010MailList(object):
                                         xml=mail_xml)
             log.debug(u'Added mail with id %s and subject %s.',
                       mail.id, mail.subject)
-            _items.append(mail)
+            self._items.append(mail)
 
 
 class Exchange2010MailItem(BaseExchangeMailItem):
