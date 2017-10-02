@@ -1271,16 +1271,18 @@ class Exchange2010MailList(object):
     def __init__(self, service=None, folder_id=u'inbox', xml_result=None):
         self.service = service
         self.folder_id = folder_id
-        self._items = list()
+        self._items = None
         self.count = None
 
         if xml_result is not None:
+            self._items = list()
             self._parse_response_for_all_mails(xml_result)
             self.load_extended_properties(self._items)
             self.count = len(self._items)
         else:
             print("xml is none")
             for item in self.items:
+                # print(item.subject)
                 pass
 
     @property
@@ -1296,6 +1298,7 @@ class Exchange2010MailList(object):
                 yield item
             return
 
+        self._items = list()
         offset = 0
         while True:
             body = soap_request.find_items(
